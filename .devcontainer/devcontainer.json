@@ -1,0 +1,33 @@
+// .devcontainer/devcontainer.json
+{
+	"name": "Ruby & TS & Rails",
+	"image": "ghcr.io/prulloac/base:bookworm",
+	"build": { "dockerfile": "Dockerfile", "context": "." },
+	"features": {
+	  "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+	  "ghcr.io/prulloac/devcontainer-features/bun:1": {},
+	  "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
+	  "ghcr.io/devcontainers/features/ruby": { "version": "3.2" }
+	},
+	"postCreateCommand": [
+	  // ランタイム時には gem コマンドが使える
+	  "gem install bundler",
+	  "gem install rails -v \"~>7.0\"",
+	  "bundle config set path vendor/bundle",
+	  "bundle install",
+	  "yarn install"
+	],
+	"forwardPorts": [3000],
+	"customizations": {
+	  "vscode": {
+		"extensions": [
+		  "rebornix.ruby",
+		  "bung87.rails",
+		  "ms-vscode.vscode-typescript-next",
+		  "esbenp.prettier-vscode"
+		]
+	  }
+	},
+	"remoteUser": "vscode"
+  }
+  
