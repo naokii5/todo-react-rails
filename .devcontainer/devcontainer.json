@@ -1,8 +1,7 @@
 // .devcontainer/devcontainer.json
 {
 	"name": "Ruby & TS & Rails",
-	"image": "ghcr.io/prulloac/base:bookworm",
-	"build": { "dockerfile": "Dockerfile", "context": "." },
+	"build": { "dockerfile": "Dockerfile", "context": "." ,"platform": "linux/amd64"},
 	"features": {
 	  "ghcr.io/devcontainers/features/docker-in-docker:2": {},
 	  "ghcr.io/prulloac/devcontainer-features/bun:1": {},
@@ -17,7 +16,7 @@
 	  "bundle install",
 	  "yarn install"
 	],
-	"forwardPorts": [3000],
+	"forwardPorts": [5173],
 	"customizations": {
 	  "vscode": {
 		"extensions": [
