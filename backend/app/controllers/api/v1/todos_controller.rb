@@ -24,7 +24,7 @@ module Api
         end
       end
 
-      #UPDATE /todos/:id
+      # PUT/PATCH /todos/:id
       def update
         if @todo.update(todo_params)
           render json: @todo
