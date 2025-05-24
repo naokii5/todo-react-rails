@@ -48,3 +48,5 @@ module Api
         params.require(:todo).permit(:title, :detail, :completed)
       end
     end
+  end
+end
