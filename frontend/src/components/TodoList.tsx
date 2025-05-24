@@ -1,5 +1,6 @@
 import React from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { Text, Button, Stack, Flex, Spinner } from '@chakra-ui/react'
 import { fetchTodos, updateTodo, deleteTodo } from '../api'
 
 export const TodoList: React.FC = () => {
@@ -20,30 +21,36 @@ export const TodoList: React.FC = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] })
   })
 
-  if (isLoading) return <div>Loading...</div>
-  if (!todos || todos.length === 0) return <div>No todos</div>
+  if (isLoading) return <Spinner />
+  if (!todos || todos.length === 0) return <Text>No todos</Text>
 
   return (
-    <ul className="space-y-2">
+    <Stack gap={2}>
       {todos.map(todo => (
-        <li key={todo.id} className="flex items-center">
+        <Flex key={todo.id} align="center" p={2} borderWidth={1} borderRadius="md">
           <input
             type="checkbox"
             checked={todo.completed}
             onChange={() => toggleMutation.mutate({ id: todo.id, completed: !todo.completed })}
-            className="mr-2"
+            style={{ marginRight: '8px' }}
           />
-          <span className={todo.completed ? 'line-through text-gray-500' : ''}>
+          <Text
+            flex={1}
+            textDecoration={todo.completed ? 'line-through' : 'none'}
+            color={todo.completed ? 'gray.500' : 'inherit'}
+          >
             {todo.title}
-          </span>
-          <button
+          </Text>
+          <Button
+            size="sm"
+            colorScheme="red"
+            variant="ghost"
             onClick={() => deleteMutation.mutate(todo.id)}
-            className="ml-auto text-red-500"
           >
             Delete
-          </button>
-        </li>
+          </Button>
+        </Flex>
       ))}
-    </ul>
+    </Stack>
   )
 }

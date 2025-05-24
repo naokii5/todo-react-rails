@@ -1,32 +1,46 @@
-// .devcontainer/devcontainer.json
 {
-	"name": "Ruby & TS & Rails",
-	"build": { "dockerfile": "Dockerfile", "context": "." ,"platform": "linux/amd64"},
-	"features": {
-	  "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-	  "ghcr.io/prulloac/devcontainer-features/bun:1": {},
-	  "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
-	  "ghcr.io/devcontainers/features/ruby": { "version": "3.2" }
-	},
-	"postCreateCommand": [
-	  // ランタイム時には gem コマンドが使える
-	  "gem install bundler",
-	  "gem install rails -v \"~>7.0\"",
-	  "bundle config set path vendor/bundle",
-	  "bundle install",
-	  "yarn install"
-	],
-	"forwardPorts": [5173],
-	"customizations": {
-	  "vscode": {
-		"extensions": [
-		  "rebornix.ruby",
-		  "bung87.rails",
-		  "ms-vscode.vscode-typescript-next",
-		  "esbenp.prettier-vscode"
-		]
-	  }
-	},
-	"remoteUser": "vscode"
-  }
-  
+  // VS Code が表示する名前
+  "name": "Rails 7 + React (TypeScript, Vite)",
+
+  // ↓ build セクションを削除し、公式 Ruby イメージを直接指定
+  "image": "mcr.microsoft.com/devcontainers/ruby:3",
+
+  // 必要なランタイムやツールは Features で declarative に追加
+  "features": {
+    // Node.js (LTS) — Vite / TypeScript 用
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
+
+    // Bun — 1 行書くだけで OK
+    "ghcr.io/prulloac/devcontainer-features/bun:1": {},
+
+  },
+
+  // コンテナ作成直後に一度だけ走るコマンド
+  "postCreateCommand": [
+    "gem install rails -v \"~>7.1\"",
+    "bundle config set path vendor/bundle",
+    "bundle install",
+    "yarn install"
+  ],
+
+  // Rails (3000) と Vite (5173) をローカルへ転送
+  "forwardPorts": [3000, 5173],
+
+  // VS Code 側の拡張機能と設定
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rebornix.ruby",
+        "bung87.rails",
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  },
+
+  // 権限を落として開発ユーザーで作業
+  "remoteUser": "vscode"
+}
